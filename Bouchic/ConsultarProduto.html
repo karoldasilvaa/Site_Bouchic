@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<script>
+    function carregarProduto(){
+        var url = 'https://localhost:7151/api/produto';
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'GET',
+            success: function(json){
+
+                $("#tabela").empty();
+                
+                $.each(json, function(index, value){
+                    console.log(value.id_produto);
+
+                    var html = '<tr>';
+                    
+                        html += '<th scope="row">' +value.idProduto+ '</th>'
+
+                        html += '<td>' +value.nome+ '</td>'
+
+                        html += '<td>' +value.cor+ '</td>'
+                    
+                        html += '<td>' +value.descricao+ '</td>'
+
+                        html += '<td>  R$' +value.preco.toFixed(2)+ '</td>'
+            
+                        html += '<td>' +value.imagem+ '</td>'
+
+                        html += '<td><button data-id-produto="'+ value.idProduto +'" class="botaoExcluir">Excluir</button></td>'
+
+                        html += '<td><a href="CadastrarProduto.html?id='+ value.idProduto +'"><button data-id-produto=" '+ value.idProduto +'" class="botaoEditar">Editar</button></a></td>'
+
+                        html += '</tr>'
+
+                    $("#tabela").append(html);
+                    
+                })
+            },
+
+            error: function(XHR, textStatus, errorThrown){
+                console.log("error: " + textStatus);
+                console.log("error: " + errorThrown);
+                console.log("parsedjson: " + JSON.stringify(XHR));
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        carregarProduto();
+        
+        $(document).on('click', '.botaoExcluir', function(){
+            var id = $(this).data('id-produto');
+            $.ajax({
+                url: 'https://localhost:7151/api/produto?id=' +id, 
+                dataType: 'json',
+                type: 'DELETE',
+                success: function(json){                    
+                    carregarProduto();
+                },
+                error: function(XHR, textStatus, errorThrown) {
+                    console.log("error: " + textStatus)
+                    console.log("error: " + errorThrown)
+                    console.log("parsedJson: " + JSON.stringify(XHR));
+                }
+            });
+        });
+    });
+
+    
+</script>
+<style>
+    #centralizaFooter {
+        text-align: center;
+         
+      }
+      
+      #produtoCentraliza {
+        text-align: center;
+      }
+      
+      #produto {
+       padding-left: 34%;
+      }
+    
+      p {
+          margin: 0px;
+      }
+    
+       /* linha do footer */
+       footer {
+      width: 100%;
+      padding: 0 100px 0 100px;
+      list-style: none;
+      border-top: 2px solid gainsboro;
+      margin-top: 20px;
+      padding: 20px;
+      }
+    
+      li {
+        list-style-type: none;
+      }
+    
+      /* diminuir input formulario */
+      .form-group {
+        width: 60% !important;
+       }
+    
+      #centralizarBotao {
+            display: flex;
+            justify-content: center;
+            margin: auto;
+       }
+    
+      h4 {
+        text-align: center;
+        margin: 30px;
+      }
+      h4::after {
+        content: '';
+        display: block;
+        width: 13rem;
+        height: 0.3rem;
+        background-color: #C65685;
+        margin: 0 auto;
+        border-radius: 10px;
+    }
+    
+    .page-checkout-login .login-content .side-divider, .page-login .login-content .side-divider {
+        border-right: 1px solid #000;
+    }
+
+    a {
+  text-decoration: none;
+}
+     
+    /* #linha-vertical {
+        /* criar a linha */
+        /* height: 200px;
+        width: 400px;
+    
+    
+        border-right: 1px solid black;
+        display: flex;
+        justify-content: center;
+       
+         */ 
+        
+    </style>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Bouchic</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="Boutique.html">Início</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="CadastrarProduto.html">Cadastrar produto</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="ConsultarProduto.html">Consultar produto</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="Produtos.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Vestuário
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="Produtos.html">Todos os Artigos</a></li>
+                                <li>
+                                  <hr class="dropdown-divider">
+                                </li>
+                      <li><a class="dropdown-item" href="Produtos.html">Vestido</a></li>
+                      <li><a class="dropdown-item" href="Produtos.html">Saia</a></li>
+                      <li><a class="dropdown-item" href="Produtos.html">Blusa</a></li>
+                    </ul>
+                  </li>
+                
+                </ul>
+                <form class="d-flex mx-auto" role="search">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+    
+                  <ul class="me-5 mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="LoginCadastro.html">Fazer Login <img src="ImgBoutique/pessoa.png" alt=""></a>
+                    </li>
+                  </ul>
+    
+                    <div class="me-3 mb-2 mb-lg-0">
+                      <a href="#"><img src="ImgBoutique/coracao.png" alt=""></a>
+                    </div>
+                    
+                    <div class="mb-2 mb-lg-0">
+                      <a href="#"><img src="ImgBoutique/carrinho.png" alt=""></a>
+                    </div>
+                   
+                  </div>
+              </div>
+            </div>
+          </nav>
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Cor</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Imagem</th>
+              </tr>
+            </thead>
+            <tbody id="tabela">
+                
+            </tbody>
+        </table>
